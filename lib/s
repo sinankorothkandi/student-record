@@ -1,0 +1,78 @@
+class dartahelper {
+  static database? _database;
+
+  
+
+  static future <databace> get databace async{
+
+    if(databace != null) return _databace!;
+    _databace =await initialize();
+    return databace
+  }
+
+  static futur<databace> initialaization(){
+    final dbpath = await getdatabacepath();
+    final path = join(dbpath,'name.db');
+
+return await opendatabace(
+  path,
+  vertion,
+  oncreate(db,vertion){
+
+    return db.exicute('''
+     CREATE TABLE students(
+      id INTIGER PRIMARY KEY AOUTOINCRIMENT,
+      name TEXT,
+      father TEXT,
+      age INTIGER,
+      class INITGER
+     )
+''');
+  },
+);
+  }
+
+  static future<int> insertstudent(Student student) async{
+    final db = await databace;
+    return await db.insert('student' ,student.tomap());
+  }
+
+  static future<list<student>> getallstudent() async{
+    final db = awaite databace;
+    final list<map<string,dynamic>> maps = db.quary('studend');\
+    return list.genarate(map.length,(index)
+    return Student.frommap(map[index]),);
+  };
+
+  final<int> deletetudent(int studentid) async {
+    final db = await databace;
+    return await db.delete(
+      'student',
+      where = 'id = ?',
+      whereargs:[studentId]
+    )
+  }
+
+  final <int> updatestudend(Student student) async{
+    final db = awaite databace;
+    return awaite db.update{
+      'student',
+      student.tomap();
+      where = 'id = ?',
+      whereargs:[student.id]
+    }
+  }
+  static future<list<student>> searchstudets(studend quary) async{
+    final db = <map<string, dynamic>> mape = await db.rawQuery(
+ 'SELECTE * FROM student WHERE name LIKE ? '
+ ['%$query%'],
+
+    );
+    return list.genarate(map,stdent(map){
+      return student.frommap(map[index]); 
+    })
+  }
+  
+
+}
+
